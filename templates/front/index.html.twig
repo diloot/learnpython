@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{parent()}} {% endblock %}
+
+{% block content %}
+        <main class="container-fluid"> 
+            <nav class="pt-2 col-12 col-md-4 offset-md-1"><!--start breadcrumb--> 
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item active">Accueil</li>
+                </ol>
+            </nav><!--end breadcrumb-->
+
+            <section><!--variabled content-->
+            <nav aria-label="Navigation de pagination"><!--start top pagination-->
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Précédent" tabindex="-1">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Précédent</span>
+                        </a>
+                    </li>
+                    {% for p in range(1,nbPages) %}
+                    <li {% if p==page %} class="page-item active"{% endif %}><a class="page-link" href="{{path('index', {'page':p}) }}">{{ p }}</a></li>
+                    {% endfor %}
+                        <a class="page-link" href="#" aria-label="Suivant">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Suivant</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav><!--end top pagination-->
+
+        {% for post in posts %}
+            <article class="border-bottom pb-3 mb-3"><!--start newestpost -->
+                <div class="p-3 mx-lg-5 ">
+                    <a href="{#{{ path('post_show', {'id': post.id}) }}#}"><img src="{{post.image.link}} {#images/mec-pc.jpg#}" alt="{{post.image.title}}" class="img-fluid mb-2 mr-md-3 float-none float-md-left">
+                    <h1>{{ post.title }}</h1></a>
+                    <small>{{ post.postType | upper }} du {{ post.date ? post.date|date('d-m-Y') : '' }}{% if (post.duration) %} - Durée : {{ post.duration }} minutes{% endif %}.</small>                 
+                    <p class="pr-5">{{ post.content }}
+                    </p>
+                    <p><a href="{#{{ path('post_show', {'id': post.id}) }}#}" class="btn btn-sm btn-outline-primary">En savoir plus</a></p>
+                    <a href="{{path('category')}}"><i class="fas fa-tag mx-2"></i>Initiation</a>
+                    <a href=""><i class="fas fa-tag mx-2"></i>Introduction</a>
+                    {% if (post.price > 0.00) %}<span class="badge badge-success ml-2">{{ post.price }} €</span>
+                    {% else %} <span class="badge badge-success ml-2">Gratuit</span>
+                    {% endif %}
+                </div>
+            </article><!--end newestpost -->
+        {% endfor %}
+
+            <nav aria-label="Navigation de pagination"><!--start bottom pagination-->
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Précédent">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Précédent</span>
+                        </a>
+                    </li>
+                    {% for p in range(1,nbPages) %}
+                    <li {% if p==page %} class="page-item active"{% endif %}><a class="page-link" href="{{path('index', {'page':p}) }}">{{ p }}</a></li>
+                    {% endfor %}
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Suivant">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Suivant</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav><!--end bottom pagination-->
+        </section><!--end variabled content-->
+    </main>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Ajouter un nouveau Post{% endblock %}
+
+{% block pageName %}
+    <h2 class="text-center">Ajouter un nouveau Post</h2>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="pt-2 col-12 col-md-9">
+    {{ include('post/_form.html.twig') }}
+    </div>
+    <div class="pt-2 col-12 col-md-3">
+        <a href="{{ path('dashboard_post_index') }}" class="btn btn-warning ml-auto text-secondary mb-4" ><i class="fas fa-user-circle text-primary pr-2"></i>Retour au tableau de bord</a>
+    </div>
+</div>
+{% endblock %}

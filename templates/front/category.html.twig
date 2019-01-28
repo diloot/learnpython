@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{parent()}} Catégorie : Initiation {% endblock %}
+
+{% block pageName %}
+    <h2 class="text-center">Catégorie : Initiation </h2>
+{% endblock %}
+
+{% block content %}
+    <main class="container-fluid">       
+        <nav class="pt-2 col-12 col-md-4 offset-md-1"><!--start breadcrumb--> 
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{path('index')}}">Accueil</a></li>
+                <li class="breadcrumb-item active">Initiation</li>
+            </ol>
+        </nav><!--end breadcrumb-->
+
+        <section class="row"><!--variabled content-->
+            <article class="col-12 offset-0 col-md-6 col-lg-4 offset-lg-2"><!--start category 1-->
+                <div class="card mb-4">
+                    <img src="images/home-1.png" alt="" class="card-img-top">
+                    <h2 class="h3 mt-2 text-center">Introduction</h2>                 
+                    <ol>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                    </ol>
+                </div>
+            </article><!--end category 1-->
+
+            <article class="col-12 col-md-6 col-lg-4"><!--start category 2-->
+                <div class="card mb-4">
+                    <img src="images/home-2.png" alt="" class="card-img-top">
+                    <h2 class="h3 mt-2 text-center">Les structures de données</h2>                 
+                    <ol>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                    </ol>
+                </div>
+            </article><!--end category 2-->
+
+            <article class="col-12 offset-0 col-md-6 col-lg-4 offset-lg-2"><!--start category 3-->
+                <div class="card mb-4">
+                    <img src="images/home-5.png" alt="" class="card-img-top">
+                    <h2 class="h3 mt-2 text-center">Les classes</h2>                 
+                    <ol>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                    </ol>
+                </div>
+            </article><!--end category 3-->
+
+            <article class="col-12 col-md-6 col-lg-4"><!--start category 4-->
+                <div class="card mb-4">
+                    <img src="images/home-6.png" alt="" class="card-img-top">
+                    <h2 class="h3 mt-2 text-center">Les structures de données</h2>                 
+                    <ol>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                        <li><a href="">Lorem ipsum dolor sit amet consectetur</a><span class="badge badge-success ml-2">Gratuit</span></li>
+                    </ol>
+                </div>
+            </article><!--end category 4-->
+         
+        </section><!--end variabled content-->
+    </main>
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{parent()}} - Dashboard{% endblock %}
+{% block pageName %}
+    <h2 class="text-center">Dashboard - Vidéos / posts </h2>
+{% endblock %}
+
+{% block nav %}
+                {{parent()}}
+{% endblock %}
+
+{% block content %}
+    <main class="container-fluid">
+        <div class="row"><!--start post content-->
+            <div class="col-12 col-sm-8"><!--start currentpost block-->       
+                <nav class="pt-2 col-12 col-md-4 offset-md-1"><!--start breadcrumb--> 
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="{{path('index')}}">Accueil</a></li>
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                </nav><!--end breadcrumb--> 
+            </div>
+            <div class="pt-2 col-12 col-md-3">
+                    <a href="{{ path('dashboard_post_new') }}" class="btn btn-warning ml-auto text-secondary mb-4" ><i class="fas fa-plus text-primary pr-2"></i>Ajouter un nouveau post</a>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table mx-3 table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Image</th>
+                        <th>Titre</th>
+                        <th>URL</th>
+                        <th>Durée (min)</th>
+                        <th>Date de création</th>
+                        <th>Prix</th>
+                        <!--<th>Description</th>-->
+                        <th>Type</th>
+                        <th>Statut</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td>{{ post.id }}</td>
+                        <td><img src="{{ post.image.link }}" width="60" height="40"></td>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.link }}</td>
+                        <td>{{ post.duration }}</td>
+                        <td>{{ post.date ? post.date|date('Y-m-d H:i:s') : '' }}</td>
+                        <td>{{ post.price }}</td>
+                        <!--<td>{#{{ post.content }}#}</td>-->
+                        <td>{{ post.postType }}</td>
+                        <td>{{ post.status }}</td>
+                        <td>
+                            <a href="{{ path('dashboard_post_show', {'id': post.id}) }}" class="btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fas fa-eye text-primary pr-2"></i>Voir</a>
+                            <a href="{{ path('dashboard_post_edit', {'id': post.id}) }}" class="btn btn-sm btn-outline-primary mr-2 mb-2"><i class="fas fa-edit text-primary pr-2"></i>Modifier</a> 
+                            {{ include('post/_delete_form.html.twig') }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="10">no records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+{% endblock %}

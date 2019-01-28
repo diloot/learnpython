@@ -24,12 +24,12 @@ class Post
     private $title;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $link;
 
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="smallint", nullable=true)
      */
     private $duration;
 
@@ -50,8 +50,8 @@ class Post
 
 // utilisation enum perso :
 
-    const TYPE_VIDEO = 'video';
-    const TYPE_POST = 'post';
+    const TYPE_VIDEO = 'Vidéo';
+    const TYPE_POST = 'Post';
     /**
      * @ORM\Column(type="string", length=100)
      */
@@ -70,20 +70,22 @@ class Post
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Image", inversedBy="post", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $image;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="posts")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="posts", cascade={"persist"})
+     * @ORM\JoinTable(name="post_category")
      */
-    private $category;
+    private $categories;
 
 
 
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
+        $this->categories = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -182,8 +184,9 @@ class Post
         if (!in_array($post_type, array(self::TYPE_VIDEO, self::TYPE_POST))) {
             throw new \InvalidArgumentException("Invalid post_type");
         }
-        $this->status = $status;
+        $this->post_type = $post_type;
     }
+    
     
     public function getStatus(): ?string
     {
@@ -205,7 +208,8 @@ class Post
         $this->status = $status;
     }
 
-//functions des relations :
+
+//methodes jointure onetoone manytomany :
 
     public function getImage(): ?Image
     {
@@ -222,15 +226,15 @@ class Post
     /**
      * @return Collection|Category[]
      */
-    public function getCategory(): Collection
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
-    public function addCategory(Category $category): self
+    public function addCategory(Category $category=null): self
     {
-        if (!$this->category->contains($category)) {
-            $this->category[] = $category;
+        if (!$this->categories->contains($category)) {
+            $this->categories[] = $category;
         }
 
         return $this;
@@ -238,8 +242,8 @@ class Post
 
     public function removeCategory(Category $category): self
     {
-        if ($this->category->contains($category)) {
-            $this->category->removeElement($category);
+        if ($this->categories->contains($category)) {
+            $this->categories->removeElement($category);
         }
 
         return $this;

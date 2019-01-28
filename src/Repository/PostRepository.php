@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Post;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -18,6 +19,22 @@ class PostRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Post::class);
     }
+
+    public function findPosts($page, $nbPerPage)
+    {
+        $query=$this->createQueryBuilder('p')
+            ->leftJoin('p.image', 'i')
+            ->addSelect('i')
+            ->leftJoin('p.categories', 'c')
+            ->addSelect('c')
+            ->orderBy('p.date', 'DESC')
+            ->getQuery();
+        $query
+            ->setFirstResult(($page-1)*$nbPerPage)
+            ->setMaxResults($nbPerPage);
+        return new Paginator($query, true);
+    }
+
 
     // /**
     //  * @return Post[] Returns an array of Post objects

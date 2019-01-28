@@ -1,0 +1,28 @@
+body {
+    background-color: rgb(88, 25, 25);
+}
+.h1, h1, .h2, h2, .h3, h3 {
+    
+    font-family: 'Russo One', sans-serif;
+    letter-spacing:2px;
+    
+    /*font-family: 'Special Elite', cursive;    machine a ecrire*/
+    /* font-family: 'Fugaz One', cursive;     italliques*/
+    /* font-family: 'Candal', sans-serif;
+    font-family: 'Sigmar One', cursive;
+    font-family: 'ZCOOL QingKe HuangYou', cursive;
+    font-family: 'Alfa Slab One', cursive;
+    letter-spacing:2px;*/
+}
+header{
+    border-bottom: solid 8px;
+}
+aside{
+    border-left: solid rgb(255, 193, 7) 10px;
+}
+footer{
+    min-height: 70px;
+}
+.imgMini{
+    max-width: 300px;
+}
