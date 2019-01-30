@@ -29,15 +29,24 @@ class Category
     private $parent_id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Post", mappedBy="category")
+     * @ORM\Column(type="string", length=100, nullable=true)
+     */
+    private $photo;
+
+    //Jointure
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Post", mappedBy="categories")
      */
     private $posts;
 
+
+    //constructor
     public function __construct()
     {
         $this->posts = new ArrayCollection();
     }
 
+    //accesseurs
     public function getId(): ?int
     {
         return $this->id;
@@ -66,6 +75,20 @@ class Category
 
         return $this;
     }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(string $photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    // jointures methods
 
     /**
      * @return Collection|Post[]

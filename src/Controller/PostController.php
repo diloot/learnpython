@@ -6,6 +6,7 @@ use App\Entity\Post;
 use App\Entity\Image;
 use App\Entity\Category;
 use App\Form\PostType;
+use App\Form\ImageType;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     /**
-     * @Route("/dashboard/", name="dashboard_post_index", methods={"GET"})
+     * @Route("/dashboard", name="dashboard_post_index", methods={"GET"})
      * dashboard table page
      */
     public function index(PostRepository $postRepository): Response
@@ -27,7 +28,7 @@ class PostController extends AbstractController
     }
 
       /**
-     * @Route("/dashboard/{id}", name="dashboard_post_show", methods={"GET"})
+     * @Route("/dashboard/post{id}", name="dashboard_post_show", methods={"GET"})
      * One post page
      */
     public function show(Post $post): Response
@@ -61,7 +62,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/{id}/edit", name="dashboard_post_edit", methods={"GET","POST"})
+     * @Route("/dashboard/post{id}/edit", name="dashboard_post_edit", methods={"GET","POST"})
      */
     public function edit(PostRepository $postRepository, Request $request, Post $post, $id): Response
     {
@@ -85,7 +86,7 @@ class PostController extends AbstractController
 
             $this->addFlash('success', "Le post ".$post->getTitle()." a bien été modifié.");
 
-            return $this->redirectToRoute('dashboard_post_index', ['id' => $post->getId()]);
+            return $this->redirectToRoute('dashboard_post_show', ['id' => $post->getId()]);
         }
 
         return $this->render('post/edit.html.twig', [
@@ -95,7 +96,7 @@ class PostController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard/{id}", name="dashboard_post_delete", methods={"DELETE"})
+     * @Route("/dashboard/post{id}/delete", name="dashboard_post_delete", methods={"DELETE"})
      */
     public function delete(PostRepository $postRepository, Request $request, Post $post): Response
     {

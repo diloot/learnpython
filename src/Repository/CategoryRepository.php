@@ -47,4 +47,15 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+    
+    public function findByParentId()
+    {
+        return $this->createQueryBuilder('c')
+            ->select('c.name, c.id')
+            ->where('c.parent_id = :c.id')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
 }

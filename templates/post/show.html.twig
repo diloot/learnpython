@@ -3,14 +3,14 @@
 {% block title %}{{parent()}}Post {{ post.id }}{% endblock %}
 
 {% block pageName %}
-    <h2 class="text-center">Post {{ post.id }}</h2>
+    <h2 class="text-center">Post {{ post.title }}</h2>
 {% endblock %}
 
 {% block content %}
     <main class="container-fluid"> 
-        <div class="row"><!--start post content-->
+        <div class="row"><!--start page content-->
             <div class="col-12 col-sm-8 offset-sm-1"><!--start currentpost block-->       
-                <nav class="pt-2 col-12 col-md-7 offset-md-1"><!--start breadcrumb--> 
+                <nav class="pt-2 col-12 "><!--start breadcrumb--> 
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{path('index')}}">Accueil</a></li>
                         <li class="breadcrumb-item"><a href="{{path('dashboard_post_index')}}">Dashboard</a></li>
@@ -18,28 +18,36 @@
                     </ol>
                 </nav><!--end breadcrumb-->
 
-                <div class="col-12 col-md-8 offset-md-1">
+                <div class="col-12 col-md-8 offset-md-3"><!--start post content list block-->
                     <ul class="list-unstyled boldUpper">
+                        <li class="text-primary"><span> Titre :</span><strong> {{ post.title }}</strong></li>
                         <li><span> Post Id :</span> {{ post.id }}</li>
                         <li><span> Date de creation :</span> {{ post.date ? post.date|date('Y-m-d H:i:s') : '' }}</li>
-                        <li><span> Titre :</span> {{ post.title }}</li>
                         <li><span> Contenu :</span> {{ post.content }}</li>
                         <li><span> Type :</span> {{ post.postType }}</li>
-                        <li><span> Lien :</span> {{ post.link }}</li>
-                        <li><span> Durée :</span> {{ post.duration }} minutes</li>
+                        <li><span> Lien vidéo :</span> {{ post.link }}</li>
+                        <li><span> Durée vidéo :</span> {{ post.duration }} minutes</li>
                         <li><span> Prix :</span> {{ post.price }} €</li>
                         <li><span> Mise en ligne :</span> {{ post.status }}</li>
-                        <li><span> Catégorie principale :</span>{# {{ post.category.parent_id.name }} #}</li>
-                        <li><span> Catégorie secondaire :</span>{# {{ post.category.name }} #}</li>
-                        <li><span> Image liée :</span> nom : {{ post.image.title }}, URL : {{ post.image.link }}, dimensions : {{ post.image.dimension }}</li>
+
+                        {% for category in post.categories %}
+                            {% if category.parentId %}
+                                <li><span> Catégorie principale :</span> {% if (category.parentId == 1) %}Initiation{% else %}Perfectionnement{% endif %}</li>
+                            {% endif %}
+                            <li><span> Catégorie :</span> {{ category.name }}</li>
+                        {% endfor %}
+                        <li class="mb-4"><span> Image liée :</span> </br>NOM : {{ post.image.title }}, </br>
+                        URL : {{ post.image.link }},  </br>DIMENSIONS : {{ post.image.dimension }}</li>
                         <img src="{{ post.image.link }}">
                     </ul>
-                    <p><a href="{{ path('dashboard_post_edit', {'id': post.id}) }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-edit text-primary pr-2"></i>Modifier</a> {{ include('post/_delete_form.html.twig') }}</p>
-                </div>
-            </div>
-            <div class="pt-2 col-12 col-md-3">
+
+                    <p><a href="{{ path('post', {'id': post.id}) }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-edit text-primary pr-2"></i>Afficher la version en ligne</a> <a href="{{ path('dashboard_post_edit', {'id': post.id}) }}" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-edit text-primary pr-2"></i>Modifier</a> {{ include('post/_delete_form.html.twig') }}</p>
+                </div><!--end post content list block-->
+            </div><!--end currentpost block-->
+
+            <div class="pt-2 col-12 col-md-3"><!--start yellow button block-->
                     <a href="{{ path('dashboard_post_index') }}" class="btn btn-warning ml-auto text-secondary mb-4" ><i class="fas fa-user-circle text-primary pr-2"></i>Retour au tableau de bord</a>
-            </div>
-        </div><!--end post content-->
+            </div><!--end yellow button block-->
+        </div><!--end page content-->
     </main>
 {% endblock %}

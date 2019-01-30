@@ -35,7 +35,27 @@ class PostRepository extends ServiceEntityRepository
         return new Paginator($query, true);
     }
 
-
+    public function getAllParentCategoryPosts($value)
+    {
+        return $this->createQueryBuilder('p')
+        ->leftJoin('p.categories', 'c')
+        ->where('category.name = :$value')
+        ->addSelect('c')
+        ->orderBy('p.date', 'DESC')
+        ->getQuery()
+        ->getResult()
+        ;
+    }
+    /*
+    public function findAllOrderedByName()
+    {
+        return $this->getEntityManager()
+            ->createQuery(
+                'SELECT p FROM App:Post p ORDER BY p.title ASC'
+            )
+            ->getResult();
+    }
+    */
     // /**
     //  * @return Post[] Returns an array of Post objects
     //  */
@@ -65,3 +85,4 @@ class PostRepository extends ServiceEntityRepository
     }
     */
 }
+

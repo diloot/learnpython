@@ -64,8 +64,8 @@
                 <div class="collapse navbar-collapse justify-content-center" id="navbar-content">
                 {% block nav %}
                         <a href="{{path('index')}}" class="nav-item nav-link active"><i class="fas fa-home mr-2"></i>Accueil</a>
-                        <a href="{{path('category')}}" class="nav-item nav-link"><i class="fas fa-brain mr-2"></i>Initiation</a>
-                        <a href="{{path('category')}}" class="nav-item nav-link"><i class="fas fa-graduation-cap mr-2"></i>Perfectionnement</a>
+                        <a href="{{path('category', {'id':1})}}" class="nav-item nav-link"><i class="fas fa-brain mr-2"></i>Initiation</a>
+                        <a href="{{path('category', {'id':2})}}" class="nav-item nav-link"><i class="fas fa-graduation-cap mr-2"></i>Perfectionnement</a>
                         <a href="" class="nav-item nav-link"><i class="fas fa-envelope mr-2"></i>À propos</a>
                     </div>
                     <!-- Le menu caché du dashboard -->                
@@ -74,8 +74,8 @@
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                             <a class="dropdown-item" href="{{ path('dashboard_post_index')}}">Gestion des vidéos / posts</a>
                             <!-- 
-                            <a class="dropdown-item" href="{#  {{ path('membre_show')}}  #}">Gestion des membres</a>
-                            <a class="dropdown-item" href="{#  {{ path('abo_show')}}  #}">Gestion des abonnements</a>
+                            <a class="dropdown-item" href="{#  {{ path('dashboard_membre_show')}}  #}">Gestion des membres</a>
+                            <a class="dropdown-item" href="{#  {{ path('dashboard_abo_show')}}  #}">Gestion des abonnements</a>
                             !-->
                         </div>
                     </div><!-- End menu dashboard -->
@@ -85,7 +85,7 @@
                 </button>
             </nav><!--end nav toggled-->       
         </header><!--end header-->
-
+    {% block messages %}
         <div class="row"><!--start flash messages-->
             {% for message in app.flashes ('error') %}
                 <div class="alert alert-danger">{{message}}</div>
@@ -100,6 +100,7 @@
                 <div class="alert alert-info">{{message}}</div>
             {% endfor %}
         </div><!--end flash messages--> 
+    {% endblock %}
     {% block content %}
     {% endblock %}
 

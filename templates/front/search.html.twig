@@ -3,7 +3,7 @@
 {% block title %}{{parent()}} - Résultats recherche{% endblock %}
 
 {% block pageName %}
-    <h2 class="text-center">Résultats de recherche</h2>
+    <h2 class="text-center">Résultats de votre recherche</h2>
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
                 <nav class="pt-2 col-12 col-md-4 offset-md-1"><!--start breadcrumb--> 
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{{path('index')}}">Accueil</a></li>
-                        <li class="breadcrumb-item active">Résultats recherche</li>
+                        <li class="breadcrumb-item active">Résultats de recherche</li>
                     </ol>
                 </nav><!--end breadcrumb-->
 
@@ -40,20 +40,24 @@
                     {% for post in posts %}
                     <article class="row border-bottom pb-3 mb-3"><!--start lastpost 1-->
                         <div class="p-3 mx-lg-5">
-                            <a href=""><img src="{{post.image.link}}" alt="{{ post.image.title}}" class="img-fluid imgMini mb-2 mr-md-3 float-none float-md-left">
+                            <a href="/post/{{post.id}}"><img src="{{post.image.link}}" alt="{{ post.image.title}}" class="img-fluid imgMini mb-2 mr-md-3 float-none float-md-left">
                             <h1 class="h2">{{post.title}}</h1></a>                 
-                            <p class="pr-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse itaque vel tenetur quasi qui corporis harum quidem sit repellendus, dolores officia distinctio assumenda minima. Vel nemo quasi distinctio maxime dolor unde ullam sequi suscipit, illo ex eveniet repellendus incidunt eius. Quae, quod!
+                            <p class="pr-5">{{post.content}}
                             </p>                        
                             <div class="d-flex justify-content-between align-items-start">
                                 <p>
-                                    <a href="{{path('category')}}"><i class="fas fa-tag mx-2"></i>Initiation</a>
-                                    <a href=""><i class="fas fa-tag mx-2"></i>Introduction</a>
+                                    {% for category in post.categories %}
+                                        {% if category.parentId %}
+                                            <a href="{{path('category', {'id':category.parentId})}}"><i class="fas fa-tag mx-2"></i>{% if (category.parentId == 1) %}Initiation{% else %}Perfectionnement{% endif %}</a>
+                                        {% endif %}
+                                        <a href="{{path('category')}}"><i class="fas fa-tag mx-2"></i>{{category.name}}</a>
+                                    {% endfor %}
                                     {% if (post.price > 0.00) %}<span class="badge badge-success ml-2">{{ post.price }} €</span>
                                     {% else %} <span class="badge badge-success ml-2">Gratuit</span>
                                     {% endif %}
                                     <small>{{ post.postType | upper }}{% if (post.duration) %} - Durée : {{ post.duration }} minutes{% endif %}.</small> 
                                 </p>
-                                <a href="" class="btn btn-sm btn-outline-primary">En savoir plus</a>
+                                <a href="/post/{{post.id}}" class="btn btn-sm btn-outline-primary">En savoir plus</a>
                             </div>
                         </div>
                     </article><!--end lastpost 1-->
@@ -83,17 +87,17 @@
 
             <aside class="col-12 col-sm-4 table-primary pr-5"><!--start categories column-->
                 <ol class="list-group py-3 mr-3">
-                    <li class="list-group-item list-group-item-action text-uppercase text-center bg-dark"><a href="{{path('category')}}">Initiation</a></li>
+                    <li class="list-group-item list-group-item-action text-uppercase text-center bg-dark"><a href="{{path('category', {'id':1})}}">Initiation</a></li>
                     <ol class="list-group">
-                        <li class="list-group-item list-group-item-action"><a href="">- Introduction</a></li>
-                        <li class="list-group-item list-group-item-action"><a href="">- Les structures de données</a></li>
-                        <li class="list-group-item list-group-item-action"><a href="">- Les classes</a></li>
+                        <li class="list-group-item list-group-item-action"><a href="{{path('category', {'id':1})}}">- Introduction</a></li>
+                        <li class="list-group-item list-group-item-action"><a href="{{path('category', {'id':1})}}">- Les structures de données</a></li>
+                        <li class="list-group-item list-group-item-action"><a href="{{path('category', {'id':1})}}">- Les classes</a></li>
                     </ol>
-                    <li class="list-group-item list-group-item-action text-uppercase text-center bg-dark"><a href="{{path('category')}}">Perfectionnement</a></li>
+                    <li class="list-group-item list-group-item-action text-uppercase text-center bg-dark"><a href="{{path('category', {'id':2})}}">Perfectionnement</a></li>
                     <ol class="list-group">
-                        <li class="list-group-item list-group-item-action"><a href="">- Lambda</a></li>
-                        <li class="list-group-item list-group-item-action"><a href="">- Compréhension de liste</a></li>
-                        <li class="list-group-item list-group-item-action"><a href="">- Décorateur</a></li>
+                        <li class="list-group-item list-group-item-action"><a href="{{path('category', {'id':2})}}">- Lambda</a></li>
+                        <li class="list-group-item list-group-item-action"><a href="{{path('category', {'id':2})}}">- Compréhension de liste</a></li>
+                        <li class="list-group-item list-group-item-action"><a href="{{path('category', {'id':2})}}">- Décorateur</a></li>
                     </ol>
                 </ol>
             </aside><!--end categories column-->

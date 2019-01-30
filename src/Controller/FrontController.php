@@ -30,6 +30,7 @@ class FrontController extends AbstractController
         }
         $nbPerPage=5;
         $Posts=$this->getDoctrine()->getManager()->getRepository('App:Post')->findPosts($page, $nbPerPage);
+
         $nbPages=ceil(count($Posts)/$nbPerPage);
         if($page>$nbPages){
             $this->addFlash('error', "La page ".$page." n'existe pas.");  
@@ -41,7 +42,7 @@ class FrontController extends AbstractController
 
 
     /**
-     * @Route("/search/", name="search")
+     * @Route("/search", name="search")
      * search results page
      */
     public function searchAction(PostRepository $postRepository): Response
@@ -51,28 +52,38 @@ class FrontController extends AbstractController
 
     
     /**
-     * @Route("/post/{Id}", name="post_show", requirements={"Id"="\d+"})
+     * @Route("/post/{id}", name="post", requirements={"id"="\d+"}, methods={"GET"})
      * post page
      */
-    public function postAction(PostRepository $postRepository, Request $request, $id=1): Response
+    public function postAction(PostRepository $postRepository, Request $request, $id): Response
     {
         $posts = $postRepository->findAll();
         $post =  $postRepository->find($id);
         return $this->render('front/post.html.twig', [
+            'id' => $id,
             'post' => $post,
             'posts'=> $posts,
         ]);
     }
     
     /**
-     * @Route("/category/{parentId}", name="category", requirements={"parentId"="\d+"})
+     * @Route("/category/{id}", name="category", requirements={"id"="\d+"}, methods={"GET"})
      * taxonomy page
      */
-    public function categoryAction($parentId = 1)
+    public function categoryAction(PostRepository $postRepository, Request $request, $id=1)
     {
+        if ($id == 1){
+            $tagCategory = "Initiation";
+        }else if ($id == 2){
+            $tagCategory = "Perfectionnement";
+        }else{
+            $tagCategory = "category.id";
+        }
+        $posts = $postRepository->findAll();
         return $this->render('front/category.html.twig', [
-            'parentId'=> $parentId,
-
+            'id'=> $id,
+            'posts' => $posts,
+            'tagCategory' => $tagCategory,
         ]);
     }
 }

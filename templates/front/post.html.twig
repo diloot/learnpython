@@ -3,18 +3,24 @@
 {% block title %} {{parent()}} {{ post.title }} {% endblock %}
 
 {% block pageName %}
-    <h2 class="text-center">{{ post.postType | upper }}</h2>
+    <h2 class="text-center">{{ post.postType | upper }} - {{ post.title }}</h2>
 {% endblock %}
 
 {% block content %}
     <main class="container-fluid"> 
         <div class="row"><!--start post content-->
             <div class="col-12 col-sm-8"><!--start currentpost block-->       
-                <nav class="pt-2 col-12 col-md-4 offset-md-1"><!--start breadcrumb--> 
+                <nav class="pt-2 col-12 col-md-11 offset-md-1"><!--start breadcrumb--> 
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{path('index')}}">Accueil</a></li>
-                <li class="breadcrumb-item"><a href="{{path('category')}}">Initiation</a></li>
-                <li class="breadcrumb-item active">{{ post.title }}</li>
+                        <li class="breadcrumb-item"><a href="{{path('index')}}">Accueil</a></li>                        
+                        {% for category in post.categories %}
+                            {% if category.parentId %}
+                                <li class="breadcrumb-item"><a href="{{path('category', {'id':category.parentId})}}">
+                                {% if (category.parentId == 1) %}Initiation{% else %}Perfectionnement{% endif %}</a></li>
+                            {% endif %}
+                            <li class="breadcrumb-item"><a href="{{path('category', {'id':category.Id})}}">{{category.name}}</a></li>
+                        {% endfor %}
+                        <li class="breadcrumb-item active">{{ post.title }}</li>
                     </ol>
                 </nav><!--end breadcrumb-->
 
@@ -22,22 +28,31 @@
                    <article class="row border-bottom pb-3 mb-3"><!--start post-->
                         <div class="p-3 mx-lg-5">
                             {% if post.link %}
-                                <video src="{{ post.link }}" controls></video>
+                                <iframe width="560" height="315" src="{{ post.link }}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             {% else %}
-                                <a href=""><img src="images/mec-pc.jpg" alt="" class="img-fluid imgMini mb-2 mr-md-3 float-none float-md-left">
+                                <img src="{{post.image.link}}" alt="{{post.image.title}}" class="img-fluid imgMini mb-2 mr-md-3 float-none float-md-left">
                             {% endif %}
+
                             <h1 class="h2">{{ post.title }}</h1></a> 
                             <small>{{ post.postType | upper }} du {{ post.date ? post.date|date('d-m-Y') : '' }}{% if (post.duration) %} - Durée : {{ post.duration }} minutes{% endif %}.</small>                 
-                            <p class="pr-5">{{post.content}}</p>                        
+                            <p class="pr-5">{{post.content}}</p>
+
                             <div class="d-flex justify-content-between align-items-start">
                                 <p>
-                                    <a href="{{path('category')}}"><i class="fas fa-tag mx-2"></i>Initiation</a>
-                                    <a href=""><i class="fas fa-tag mx-2"></i>Introduction</a>
-                                    {% if (post.price > 0.00) %}<span class="badge badge-success ml-2">{{ post.price }} €</span>
-                                    {% else %} <span class="badge badge-success ml-2">Gratuit</span>
+                                {% for category in post.categories %}
+                                    {% if (category.parentId == 1) %}
+                                        <a href="{{path('category', {'id':1})}}"><i class="fas fa-tag mx-2"></i>Initiation</a>
                                     {% endif %}
+                                    {% if (category.parentId == 2) %}
+                                        <a href="{{path('category', {'id':2})}}"><i class="fas fa-tag mx-2"></i>Perfectionnement</a>
+                                    {% endif %}
+                                    <a href="{{path('category', {'id':category.id})}}"><i class="fas fa-tag mx-2"></i>{{category.name}}</a>
+                                {% endfor %}
+                                {% if (post.price > 0.00) %}<span class="badge badge-success ml-2">{{ post.price }} €</span>
+                                {% else %} <span class="badge badge-success ml-2">Gratuit</span>
+                                {% endif %}
                                 </p>
-                                <a href="{# {{ path('post_show', {'id': post.id}) }}#}" class="btn btn-sm btn-outline-primary">Article suivant</a>
+                                <a href="{{ path('post', {'id': post.id}) }}" class="btn btn-sm btn-outline-primary">Article suivant</a>
                             </div>
                         </div>
                     </article><!--end post-->
@@ -46,17 +61,25 @@
 
             <aside class="col-12 col-sm-4 table-primary pr-5"><!--start related posts column-->
                 <ol class="list-group py-3 mr-3">
-                    <li class="list-group-item list-group-item-action text-uppercase text-center bg-dark"><a href="{{path('category')}}">Initiation</a></li>
-                    <ol class="list-group">
-                    {% for post in posts %}
-                        <li class="list-group-item list-group-item-action">
-                            <a href="{# {{ path('post_show', {'id': post.id}) }}#}">
-                            <img src="images/mec-pc.jpg" alt="" class="img-fluid imgMini mb-2 mr-md-3">
-                            {{ post.title }}</a>
+                    {% for category in post.categories %}
+                        <li class="list-group-item list-group-item-action text-uppercase text-center bg-dark">
+                            <a href="{{path('category', {'id':category.parentId})}}">{% if (category.parentId == 1) %}Initiation{% else %}Perfectionnement{% endif %}</a>
                         </li>
+
+                        <ol class="list-group">
+                        {% for post in posts %}
+                            {% for category in post.categories %}
+                                {% if category.parentId == 1  %}
+                                    <li class="list-group-item list-group-item-action">
+                                        <a href="{{ path('post', {'id': post.id}) }}">
+                                        <img src="{{ post.image.link }}" alt="" class="img-fluid imgMini mb-2 mr-md-3"></br>
+                                        <small>{{ post.title }}</small></a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
+                        </ol>
                     {% endfor %}
-                    </ol>
-                    <li class="list-group-item list-group-item-action text-uppercase text-center bg-dark"><a href="{{path('category')}}">Perfectionnement</a></li>
                 </ol>
             </aside><!--end related posts column-->
         </div><!--end post content-->
